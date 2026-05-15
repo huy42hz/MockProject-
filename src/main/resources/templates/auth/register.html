@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký - Thuê Xe Trực Tuyến</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .card {
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 16px;
+        }
+        .btn-register {
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <h2 class="fw-bold text-primary">🚗 Thuê Xe Trực Tuyến</h2>
+                            <h4 class="mt-2">Tạo tài khoản mới</h4>
+                        </div>
+
+                        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+                       <form th:action="@{/auth/register}"
+      method="post"
+      th:object="${registerRequest}">
+
+    <!-- Họ tên -->
+    <div class="mb-3">
+        <label class="form-label fw-bold">
+            Họ và tên
+        </label>
+
+        <input type="text"
+               class="form-control"
+               th:field="*{hoTen}"
+               placeholder="Nguyễn Văn A">
+
+        <div class="text-danger small"
+             th:errors="*{hoTen}">
+        </div>
+    </div>
+
+    <!-- Email -->
+    <div class="mb-3">
+        <label class="form-label fw-bold">
+            Email
+        </label>
+
+        <input type="email"
+               class="form-control"
+               th:field="*{email}"
+               placeholder="example@gmail.com">
+
+        <div class="text-danger small"
+             th:errors="*{email}">
+        </div>
+    </div>
+
+    <!-- SĐT -->
+    <div class="mb-3">
+        <label class="form-label fw-bold">
+            Số điện thoại
+        </label>
+
+        <input type="text"
+               class="form-control"
+               th:field="*{soDienThoai}"
+               placeholder="0912345678">
+
+        <div class="text-danger small"
+             th:errors="*{soDienThoai}">
+        </div>
+    </div>
+
+    <!-- Địa chỉ -->
+    <div class="mb-3">
+        <label class="form-label fw-bold">
+            Địa chỉ
+        </label>
+
+        <input type="text"
+               class="form-control"
+               th:field="*{diaChi}"
+               placeholder="Đà Nẵng">
+
+        <div class="text-danger small"
+             th:errors="*{diaChi}">
+        </div>
+    </div>
+
+    <!-- CCCD -->
+    <div class="mb-3">
+        <label class="form-label fw-bold">
+            CCCD
+        </label>
+
+        <input type="text"
+               class="form-control"
+               th:field="*{soCCCD}"
+               placeholder="12 số CCCD">
+
+        <div class="text-danger small"
+             th:errors="*{soCCCD}">
+        </div>
+    </div>
+
+    <!-- Mật khẩu -->
+    <div class="mb-3">
+        <label class="form-label fw-bold">
+            Mật khẩu
+        </label>
+
+        <input type="password"
+               class="form-control"
+               th:field="*{matKhau}">
+
+        <div class="text-danger small"
+             th:errors="*{matKhau}">
+        </div>
+    </div>
+
+    <!-- Xác nhận -->
+    <div class="mb-4">
+        <label class="form-label fw-bold">
+            Xác nhận mật khẩu
+        </label>
+
+        <input type="password"
+               class="form-control"
+               th:field="*{confirmMatKhau}">
+    </div>
+
+    <button type="submit"
+            class="btn btn-primary w-100 py-2">
+
+        <i class="fas fa-user-plus"></i>
+        Đăng ký
+    </button>
+</form>
+                        <div class="text-center">
+                            <p>Đã có tài khoản? 
+                                <a th:href="@{/auth/login}" class="text-decoration-none fw-bold">Đăng nhập ngay</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

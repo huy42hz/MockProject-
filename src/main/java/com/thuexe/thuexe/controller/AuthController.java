@@ -1,0 +1,145 @@
+// controller/AuthController.java
+package com.thuexe.thuexe.controller;
+
+import com.thuexe.thuexe.dto.LoginRequest;
+import com.thuexe.thuexe.dto.RegisterRequest;
+import com.thuexe.thuexe.entity.NguoiDung;
+import com.thuexe.thuexe.service.UserService;
+import com.thuexe.thuexe.dto.ForgotPasswordRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+
+@Controller
+@RequestMapping("/auth")
+public class AuthController {
+
+    private final UserService userService;
+
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
+
+    // ====================== ĐĂNG KÝ ======================
+    @GetMapping("/register")
+    public String showRegister(Model model) {
+        model.addAttribute("registerRequest", new RegisterRequest());
+        return "auth/register";
+    }
+    @GetMapping("/forgot-password")
+    public String showForgotPassword(Model model) {
+
+        model.addAttribute("forgotRequest",
+                new ForgotPasswordRequest());
+
+        return "auth/forgot-password";
+    }
+    @PostMapping("/forgot-password")
+    public String forgotPassword(
+            @Valid @ModelAttribute("forgotRequest")
+            ForgotPasswordRequest request,
+            BindingResult result,
+            Model model
+    ) {
+
+        if (result.hasErrors()) {
+            return "auth/forgot-password";
+        }
+
+        if (!request.getNewPassword()
+                .equals(request.getConfirmPassword())) {
+
+            model.addAttribute("error",
+                    "Xác nhận mật khẩu không khớp");
+
+            return "auth/forgot-password";
+        }
+
+        try {
+
+            userService.resetPassword(
+                    request.getEmail(),
+                    request.getNewPassword()
+            );
+
+            return "redirect:/auth/login";
+
+        } catch (Exception e) {
+
+            model.addAttribute("error",
+                    e.getMessage());
+
+            return "auth/forgot-password";
+        }
+    }
+
+    @PostMapping("/register")
+    public String register(@Valid @ModelAttribute RegisterRequest request,
+                           BindingResult result, Model model) {
+        
+        if (result.hasErrors()) {
+            return "auth/register";
+        }
+
+        if (!request.getMatKhau().equals(request.getConfirmMatKhau())) {
+            model.addAttribute("error", "Mật khẩu xác nhận không khớp!");
+            return "auth/register";
+        }
+
+        try {
+            userService.register(request);
+            model.addAttribute("success", "Đăng ký thành công! Vui lòng đăng nhập.");
+
+            return "redirect:/auth/login";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "auth/register";
+        }
+    }
+
+    // ====================== ĐĂNG NHẬP ======================
+    @GetMapping("/login")
+    public String showLogin(Model model) {
+        model.addAttribute("loginRequest", new LoginRequest());
+        return "auth/login";
+    }
+
+    @PostMapping("/login")
+    public String login(@Valid @ModelAttribute LoginRequest request,
+                        BindingResult result, Model model, HttpSession session) {
+        
+        if (result.hasErrors()) {
+            return "auth/login";
+        }
+
+        try {
+            NguoiDung user = userService.login(request.getSoDienThoai(), request.getMatKhau());
+            
+            // Lưu thông tin user vào session
+            session.setAttribute("currentUser", user);
+            session.setMaxInactiveInterval(60 * 60); // 1 giờ
+
+            // Redirect theo vai trò
+            return switch (user.getVaiTro()) {
+                case "ADMIN" -> "redirect:/admin/dashboard";
+                case "OWNER" -> "redirect:/owner/dashboard";
+                default -> "redirect:/";           // Chuyển về trang chủ (Guest)
+            };
+
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "auth/login";
+        }
+    }
+
+    // ====================== ĐĂNG XUẤT ======================
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/auth/login?logout=true";
+    }
+}
