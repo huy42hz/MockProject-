@@ -137,7 +137,7 @@ public class AuthController {
     }
 
     // ====================== ĐĂNG XUẤT ======================
-    @GetMapping("/logout")
+    @GetMapping("/logout") 
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/auth/login?logout=true";

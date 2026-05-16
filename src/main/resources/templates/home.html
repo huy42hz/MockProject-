@@ -4,411 +4,173 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thuê Xe Trực Tuyến - Đà Nẵng</title>
-
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
     <style>
-        body {
-            overflow-x: hidden;
-        }
-
         .hero {
-            background:
-                linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-                url('https://source.unsplash.com/random/1920x1080/?car') no-repeat center center;
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+                        url('https://source.unsplash.com/random/1920x1080/?da-nang-car') no-repeat center center;
             background-size: cover;
             min-height: 100vh;
             display: flex;
             align-items: center;
             color: white;
         }
-
         .navbar {
-            background: rgba(0,0,0,0.8) !important;
+            background: rgba(0, 0, 0, 0.85) !important;
             backdrop-filter: blur(10px);
         }
-
-        .navbar-brand {
-            letter-spacing: 1px;
-        }
-
         .search-box {
             background: white;
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.25);
         }
-
-        .search-box .form-control,
-        .search-box .form-select {
-            height: 50px;
-            border-radius: 12px;
-        }
-
-        .search-box .btn {
-            border-radius: 12px;
-            height: 50px;
-            font-weight: 600;
-        }
-
         .feature-box {
             padding: 30px;
             border-radius: 20px;
             background: white;
             transition: 0.3s;
-            height: 100%;
         }
-
         .feature-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
-
         .avatar-circle {
-            width: 38px;
-            height: 38px;
+            width: 38px; height: 38px;
             border-radius: 50%;
-            background: white;
-            color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
             overflow: hidden;
-        }
-
-        .avatar-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .dropdown-menu {
-            border-radius: 14px;
-            border: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            padding: 10px;
-        }
-
-        .dropdown-item {
-            border-radius: 10px;
-            padding: 10px 14px;
-            transition: 0.2s;
-        }
-
-        .dropdown-item:hover {
-            background: #f5f5f5;
+            background: #fff;
         }
     </style>
 </head>
-
 <body>
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container">
+        <a class="navbar-brand fw-bold fs-3" th:href="@{/}">🚗 Thuê Xe</a>
 
-        <!-- LOGO -->
-        <a class="navbar-brand fw-bold fs-3" th:href="@{/}">
-            🚗 Thuê Xe
-        </a>
-
-        <!-- MOBILE BUTTON -->
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarNav">
-
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- MENU -->
         <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-3">
 
-            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                <li class="nav-item"><a class="nav-link" href="#">Tìm Xe</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/owner/dang-ky-chu-xe}">Trở thành chủ xe</a></li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        Trở thành chủ xe
-                    </a>
-                </li>
-
-               
-                <!-- ==================== CHƯA LOGIN ==================== -->
+                <!-- CHƯA ĐĂNG NHẬP -->
                 <th:block th:if="${session.currentUser == null}">
-
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/auth/login}">
-                            Đăng Nhập
-                        </a>
+                        <a class="nav-link" th:href="@{/auth/login}">Đăng Nhập</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="btn btn-outline-light px-3"
-                           th:href="@{/auth/register}">
-                            Đăng Ký
-                        </a>
+                        <a class="btn btn-outline-light px-4" th:href="@{/auth/register}">Đăng Ký</a>
                     </li>
-
                 </th:block>
 
-                <!-- ==================== ĐÃ LOGIN ==================== -->
+                <!-- ĐÃ ĐĂNG NHẬP -->
                 <th:block th:if="${session.currentUser != null}">
-
                     <li class="nav-item dropdown">
-
-                        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2"
-                           href="#"
-                           role="button"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                           
-                           
-                             <!-- TÊN -->
-                            <span class="fw-semibold">
-                                Xin chào,
-                                <span th:text="${session.currentUser.hoTen}"></span>
-                            </span>
-
-                            <!-- AVATAR -->
+                        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" 
+                           href="#" role="button" data-bs-toggle="dropdown">
+                            <span>Xin chào, <strong th:text="${session.currentUser.hoTen}"></strong></span>
                             <div class="avatar-circle">
-
-                                <!-- Nếu có ảnh -->
-                                <img th:if="${session.currentUser.anhDaiDien != null}"
-                                     th:src="${session.currentUser.anhDaiDien}">
-
-                                <!-- Nếu chưa có ảnh -->
-                                <i th:if="${session.currentUser.anhDaiDien == null}"
-                                   class="fas fa-user"></i>
-
+                                <i class="fas fa-user fs-5" th:if="${session.currentUser.anhDaiDien == null}"></i>
+                                <img th:if="${session.currentUser.anhDaiDien != null}" 
+                                     th:src="${session.currentUser.anhDaiDien}" 
+                                     style="width:100%; height:100%; object-fit:cover;">
                             </div>
-
-                          
-
                         </a>
-
-                        <!-- DROPDOWN -->
                         <ul class="dropdown-menu dropdown-menu-end">
-
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user-circle me-2"></i>
-                                    Quản lý tài khoản
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-car-side me-2"></i>
-                                    Xe đã thuê
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-heart me-2"></i>
-                                    Danh sách yêu thích
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-history me-2"></i>
-                                    Lịch sử giao dịch
-                                </a>
-                            </li>
-
+                            <li><a class="dropdown-item" href="#">Hồ sơ cá nhân</a></li>
+                            <li><a class="dropdown-item" href="#">Xe của tôi</a></li>
+                            <li><a class="dropdown-item" href="#">Đơn thuê</a></li>
                             <li><hr class="dropdown-divider"></li>
-
                             <li>
-                                <a class="dropdown-item text-danger"
-                                   th:href="@{/auth/logout}">
-
-                                    <i class="fas fa-sign-out-alt me-2"></i>
-                                    Đăng xuất
+                                <a class="dropdown-item text-danger" th:href="@{/auth/logout}">
+                                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
                                 </a>
                             </li>
-
                         </ul>
-
                     </li>
-
                 </th:block>
-
             </ul>
-
         </div>
     </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-
     <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-10">
+                <h1 class="display-3 fw-bold mb-3">Thuê Xe Dễ Dàng Tại Đà Nẵng</h1>
+                <p class="lead mb-5 fs-4">Hàng trăm xe chất lượng - Giá tốt nhất - Giao nhận tận nơi</p>
 
-        <div class="row justify-content-center">
-
-            <div class="col-lg-10 text-center">
-
-                <h1 class="display-3 fw-bold mb-3">
-                    Thuê Xe Dễ Dàng - Chất Lượng Cao
-                </h1>
-
-                <p class="lead mb-5">
-                    Hàng trăm xe chất lượng tại Đà Nẵng - Giá tốt - Giao xe nhanh chóng
-                </p>
-
-                <!-- SEARCH -->
                 <div class="search-box mx-auto" style="max-width: 850px;">
-
                     <form th:action="@{/xe/tim-kiem}" method="get">
-
                         <div class="row g-3">
-
                             <div class="col-md-4">
-
-                                <label class="form-label text-dark fw-bold">
-                                    Địa điểm nhận xe
-                                </label>
-
+                                <label class="form-label text-dark fw-bold">Địa điểm nhận xe</label>
                                 <select class="form-select" name="khuVuc">
-
-                                    <option value="">
-                                        Chọn thành phố
-                                    </option>
-
-                                    <option value="3">
-                                        Đà Nẵng
-                                    </option>
-
-                                    <option value="1">
-                                        Hà Nội
-                                    </option>
-
-                                    <option value="2">
-                                        Hồ Chí Minh
-                                    </option>
-
+                                    <option value="3">Đà Nẵng</option>
+                                    <option value="1">Hà Nội</option>
+                                    <option value="2">TP. Hồ Chí Minh</option>
                                 </select>
                             </div>
-
                             <div class="col-md-3">
-
-                                <label class="form-label text-dark fw-bold">
-                                    Ngày nhận
-                                </label>
-
-                                <input type="date"
-                                       class="form-control"
-                                       name="ngayNhan">
-
+                                <label class="form-label text-dark fw-bold">Ngày nhận</label>
+                                <input type="date" class="form-control" name="ngayNhan">
                             </div>
-
                             <div class="col-md-3">
-
-                                <label class="form-label text-dark fw-bold">
-                                    Ngày trả
-                                </label>
-
-                                <input type="date"
-                                       class="form-control"
-                                       name="ngayTra">
-
+                                <label class="form-label text-dark fw-bold">Ngày trả</label>
+                                <input type="date" class="form-control" name="ngayTra">
                             </div>
-
                             <div class="col-md-2 d-flex align-items-end">
-
-                                <button type="submit"
-                                        class="btn btn-primary w-100">
-
-                                    <i class="fas fa-search"></i>
-                                    Tìm Xe
-
+                                <button type="submit" class="btn btn-primary w-100 py-3">
+                                    <i class="fas fa-search"></i> Tìm Xe
                                 </button>
-
                             </div>
-
                         </div>
-
                     </form>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </section>
 
 <!-- FEATURES -->
 <section class="bg-light py-5">
-
     <div class="container">
-
         <div class="row g-4 text-center">
-
             <div class="col-md-4">
-
                 <div class="feature-box">
-
                     <i class="fas fa-car fa-3x text-primary mb-3"></i>
-
                     <h4>Đa dạng xe</h4>
-
-                    <p class="text-muted">
-                        Hơn 100 xe từ Sedan đến SUV cao cấp
-                    </p>
-
+                    <p class="text-muted">Sedan, SUV, MPV, Bán tải...</p>
                 </div>
-
             </div>
-
             <div class="col-md-4">
-
                 <div class="feature-box">
-
                     <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
-
-                    <h4>An toàn tuyệt đối</h4>
-
-                    <p class="text-muted">
-                        Bảo hiểm đầy đủ và hỗ trợ 24/7
-                    </p>
-
+                    <h4>Bảo hiểm đầy đủ</h4>
+                    <p class="text-muted">An toàn cho mọi chuyến đi</p>
                 </div>
-
             </div>
-
             <div class="col-md-4">
-
                 <div class="feature-box">
-
-                    <i class="fas fa-clock fa-3x text-primary mb-3"></i>
-
-                    <h4>Giao xe nhanh</h4>
-
-                    <p class="text-muted">
-                        Nhận xe trong vòng 30 phút
-                    </p>
-
+                    <i class="fas fa-headset fa-3x text-primary mb-3"></i>
+                    <h4>Hỗ trợ 24/7</h4>
+                    <p class="text-muted">Luôn sẵn sàng hỗ trợ bạn</p>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </section>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
