@@ -1,4 +1,3 @@
-// dto/DangKyChuXeRequest.java
 package com.thuexe.thuexe.dto;
 
 import jakarta.validation.constraints.NotBlank;
@@ -6,7 +5,7 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class DangKyChuXeRequest {
+public class OwnerRegistrationRequest {
 
     @NotBlank(message = "Số CCCD không được để trống")
     private String soCCCD;
@@ -14,8 +13,7 @@ public class DangKyChuXeRequest {
     private MultipartFile anhCCCDMatTruoc;
     private MultipartFile anhCCCDMatSau;
 
-    @NotBlank(message = "Số GPLX không được để trống")
-    private String soGPLX;
-
-    private MultipartFile anhGPLX;
+    // Nếu sau này thêm GPLX thì bổ sung ở đây
+    // private String soGPLX;
+    // private MultipartFile anhGPLX;
 }

@@ -1,8 +1,7 @@
-// controller/OwnerController.java
 package com.thuexe.thuexe.controller;
 
-import com.thuexe.thuexe.dto.DangKyChuXeRequest;
-import com.thuexe.thuexe.entity.NguoiDung;
+import com.thuexe.thuexe.dto.OwnerRegistrationRequest;
+import com.thuexe.thuexe.entity.User;
 import com.thuexe.thuexe.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -19,33 +18,33 @@ public class OwnerController {
         this.userService = userService;
     }
 
-    // ==================== HIỂN THỊ FORM ====================
+    // Hiển thị form đăng ký chủ xe
     @GetMapping("/dang-ky-chu-xe")
-    public String showDangKyChuXe(Model model, HttpSession session) {
-        NguoiDung user = (NguoiDung) session.getAttribute("currentUser");
+    public String showOwnerRegistrationForm(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("currentUser");
         
         if (user == null) {
             return "redirect:/auth/login";
         }
 
-        model.addAttribute("dangKyRequest", new DangKyChuXeRequest());
-        model.addAttribute("user", user);   // Truyền thông tin user vào template
-        return "owner/dang-ky-chu-xe";
+        model.addAttribute("ownerRegistrationRequest", new OwnerRegistrationRequest());
+        model.addAttribute("user", user);
+        return "owner/owner-registration";   // tên template mới
     }
 
-    // ==================== XỬ LÝ FORM ====================
+    // Xử lý submit form
     @PostMapping("/dang-ky-chu-xe")
-    public String submitDangKyChuXe(@ModelAttribute DangKyChuXeRequest request,
-                                    HttpSession session, Model model) {
+    public String submitOwnerRegistration(@ModelAttribute OwnerRegistrationRequest request,
+                                          HttpSession session, Model model) {
         try {
-            NguoiDung user = (NguoiDung) session.getAttribute("currentUser");
-            userService.dangKyChuXe(user.getMaNguoiDung(), request);
+            User user = (User) session.getAttribute("currentUser");
+            userService.registerAsOwner(user.getMaNguoiDung(), request);
 
-            model.addAttribute("success", "Đơn đăng ký đã được gửi thành công! Admin sẽ xét duyệt sớm nhất.");
-            return "owner/dang-ky-chu-xe";
+            model.addAttribute("success", "Đơn đăng ký trở thành chủ xe đã được gửi thành công! Admin sẽ xét duyệt sớm.");
+            return "owner/owner-registration";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
-            return "owner/dang-ky-chu-xe";
+            return "owner/owner-registration";
         }
     }
 }

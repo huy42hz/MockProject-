@@ -1,4 +1,3 @@
-// entity/DangKyNguoiChoThue.java
 package com.thuexe.thuexe.entity;
 
 import jakarta.persistence.*;
@@ -7,18 +6,21 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "DangKyNguoiChoThue")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class DangKyNguoiChoThue {
+@Table(name = "DangKyChuXe")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class OwnerRegistration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "maDangKy")
     private Long maDangKy;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "maNguoiDung", nullable = false)
-    private NguoiDung nguoiDung;
+    private User user;
 
     @Column(name = "soCCCD", nullable = false, length = 20)
     private String soCCCD;
@@ -29,19 +31,13 @@ public class DangKyNguoiChoThue {
     @Column(name = "anhCCCDMatSau", nullable = false, length = 200)
     private String anhCCCDMatSau;
 
-    @Column(name = "soGPLX", nullable = false, length = 20)
-    private String soGPLX;
-
-    @Column(name = "anhGPLX", nullable = false, length = 200)
-    private String anhGPLX;
-
     @Column(name = "trangThai", nullable = false, length = 20)
-    private String trangThai = "PENDING"; // PENDING, APPROVED, REJECTED
+    private String trangThai = "ChoDuyet";
 
     @Column(name = "lyDoTuChoi", length = 300)
     private String lyDoTuChoi;
 
     @CreationTimestamp
-    @Column(name = "ngayTao")
-    private LocalDateTime ngayTao;
+    @Column(name = "ngayGui", updatable = false)
+    private LocalDateTime ngayGui;
 }

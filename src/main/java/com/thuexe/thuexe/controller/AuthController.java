@@ -3,7 +3,8 @@ package com.thuexe.thuexe.controller;
 
 import com.thuexe.thuexe.dto.LoginRequest;
 import com.thuexe.thuexe.dto.RegisterRequest;
-import com.thuexe.thuexe.entity.NguoiDung;
+
+import com.thuexe.thuexe.entity.User;
 import com.thuexe.thuexe.service.UserService;
 import com.thuexe.thuexe.dto.ForgotPasswordRequest;
 import jakarta.servlet.http.HttpSession;
@@ -117,7 +118,7 @@ public class AuthController {
         }
 
         try {
-            NguoiDung user = userService.login(request.getSoDienThoai(), request.getMatKhau());
+            User user = userService.login(request.getSoDienThoai(), request.getMatKhau());
             
             // Lưu thông tin user vào session
             session.setAttribute("currentUser", user);
