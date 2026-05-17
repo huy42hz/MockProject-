@@ -33,8 +33,8 @@ public class User {
     @Column(name = "address", length = 255)
     private String address;
 
-    @Column(name = "nationalId", length = 20)
-    private String nationalId;
+//    @Column(name = "nationalId", length = 20)
+//    private String nationalId;
 
     @Column(name = "avatar", length = 500)
     private String avatar;
