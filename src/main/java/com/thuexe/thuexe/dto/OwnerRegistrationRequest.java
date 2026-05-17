@@ -7,13 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class OwnerRegistrationRequest {
 
-    @NotBlank(message = "Số CCCD không được để trống")
-    private String soCCCD;
+    @NotBlank(message = "National ID is required")
+    private String nationalId;   // tương ứng cccd
 
-    private MultipartFile anhCCCDMatTruoc;
-    private MultipartFile anhCCCDMatSau;
-
-    // Nếu sau này thêm GPLX thì bổ sung ở đây
-    // private String soGPLX;
-    // private MultipartFile anhGPLX;
+    private MultipartFile nationalIdFrontImage;
+    private MultipartFile nationalIdBackImage;
 }

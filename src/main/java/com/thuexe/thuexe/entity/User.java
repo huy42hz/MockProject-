@@ -6,7 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "NguoiDung")
+@Table(name = "[User]")   // ← Quan trọng nhất
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,40 +15,40 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "maNguoiDung")
-    private Long maNguoiDung;
+    @Column(name = "userId")
+    private Long userId;
 
-    @Column(name = "soDienThoai", nullable = false, unique = true, length = 15)
-    private String soDienThoai;
+    @Column(name = "fullName", nullable = false, length = 100)
+    private String fullName;
 
-    @Column(name = "email", unique = true, length = 100)
+    @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(name = "hoTen", nullable = false, length = 50)
-    private String hoTen;
+    @Column(name = "phone", nullable = false, unique = true, length = 15)
+    private String phone;
 
-    @Column(name = "matKhau", nullable = false, length = 255)
-    private String matKhau;
+    @Column(name = "password", nullable = false)
+    private String password;
 
-    @Column(name = "anhDaiDien", length = 200)
-    private String anhDaiDien;
+    @Column(name = "address", length = 255)
+    private String address;
 
-    @Column(name = "cccd", length = 20)
-    private String cccd;
+    @Column(name = "nationalId", length = 20)
+    private String nationalId;
 
-    @Column(name = "diaChi", length = 200)
-    private String diaChi;
+    @Column(name = "avatar", length = 500)
+    private String avatar;
 
-    @Column(name = "vaiTro", nullable = false, length = 20)
-    private String vaiTro = "KhachHang";
+    @Column(name = "role", nullable = false, length = 20)
+    private String role = "Customer";
 
-    @Column(name = "trangThai", nullable = false, length = 20)
-    private String trangThai = "HoatDong";
+    @Column(name = "status", nullable = false, length = 20)
+    private String status = "Active";
 
-    @Column(name = "lyDoKhoa", length = 300)
-    private String lyDoKhoa;
+    @Column(name = "lockReason", length = 255)
+    private String lockReason;
 
     @CreationTimestamp
-    @Column(name = "ngayTao", updatable = false)
-    private LocalDateTime ngayTao;
+    @Column(name = "createdAt")
+    private LocalDateTime createdAt;
 }

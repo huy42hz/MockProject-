@@ -6,9 +6,7 @@ import java.util.List;
 
 public interface OwnerRegistrationRepository extends JpaRepository<OwnerRegistration, Long> {
 
-    // Kiểm tra người dùng đã có đơn đang chờ duyệt chưa
-    boolean existsByUser_MaNguoiDungAndTrangThai(Long maNguoiDung, String trangThai);
+    boolean existsByUser_UserIdAndStatus(Long userId, String status);
 
-    // Lấy danh sách đơn đăng ký của một user
-    List<OwnerRegistration> findByUser_MaNguoiDung(Long maNguoiDung);
+    List<OwnerRegistration> findByUser_UserId(Long userId);
 }

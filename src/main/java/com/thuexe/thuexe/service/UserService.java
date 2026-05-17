@@ -6,7 +6,7 @@ import com.thuexe.thuexe.entity.User;
 
 public interface UserService {
     User register(RegisterRequest request);
-    User login(String soDienThoai, String matKhau);
+    User login(String phone, String password);
     void resetPassword(String email, String newPassword);
-    void registerAsOwner(Long maNguoiDung, OwnerRegistrationRequest request);
+    void registerAsOwner(Long userId, OwnerRegistrationRequest request);
 }

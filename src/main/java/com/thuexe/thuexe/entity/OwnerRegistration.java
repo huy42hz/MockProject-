@@ -6,7 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "DangKyChuXe")
+@Table(name = "OwnerRegistration")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,29 +15,23 @@ public class OwnerRegistration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "maDangKy")
-    private Long maDangKy;
+    @Column(name = "registrationId")
+    private Long registrationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "maNguoiDung", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    @Column(name = "soCCCD", nullable = false, length = 20)
-    private String soCCCD;
+    @Column(name = "status", nullable = false, length = 20)
+    private String status = "Pending";
 
-    @Column(name = "anhCCCDMatTruoc", nullable = false, length = 200)
-    private String anhCCCDMatTruoc;
-
-    @Column(name = "anhCCCDMatSau", nullable = false, length = 200)
-    private String anhCCCDMatSau;
-
-    @Column(name = "trangThai", nullable = false, length = 20)
-    private String trangThai = "ChoDuyet";
-
-    @Column(name = "lyDoTuChoi", length = 300)
-    private String lyDoTuChoi;
+    @Column(name = "rejectReason", length = 300)
+    private String rejectReason;
 
     @CreationTimestamp
-    @Column(name = "ngayGui", updatable = false)
-    private LocalDateTime ngayGui;
+    @Column(name = "submittedAt", updatable = false)
+    private LocalDateTime submittedAt;
+
+    @Column(name = "reviewedAt")
+    private LocalDateTime reviewedAt;
 }

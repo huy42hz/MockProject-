@@ -18,7 +18,6 @@ public class OwnerController {
         this.userService = userService;
     }
 
-    // Hiển thị form đăng ký chủ xe
     @GetMapping("/dang-ky-chu-xe")
     public String showOwnerRegistrationForm(Model model, HttpSession session) {
         User user = (User) session.getAttribute("currentUser");
@@ -29,16 +28,15 @@ public class OwnerController {
 
         model.addAttribute("ownerRegistrationRequest", new OwnerRegistrationRequest());
         model.addAttribute("user", user);
-        return "owner/owner-registration";   // tên template mới
+        return "owner/owner-registration";
     }
 
-    // Xử lý submit form
     @PostMapping("/dang-ky-chu-xe")
     public String submitOwnerRegistration(@ModelAttribute OwnerRegistrationRequest request,
                                           HttpSession session, Model model) {
         try {
             User user = (User) session.getAttribute("currentUser");
-            userService.registerAsOwner(user.getMaNguoiDung(), request);
+            userService.registerAsOwner(user.getUserId(), request);
 
             model.addAttribute("success", "Đơn đăng ký trở thành chủ xe đã được gửi thành công! Admin sẽ xét duyệt sớm.");
             return "owner/owner-registration";

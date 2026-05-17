@@ -24,61 +24,51 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(RegisterRequest req) {
-        if (userRepository.existsBySoDienThoai(req.getSoDienThoai())) {
+        if (userRepository.existsByPhone(req.getPhone())) {
             throw new RuntimeException("Số điện thoại đã được đăng ký");
         }
         if (userRepository.existsByEmail(req.getEmail())) {
             throw new RuntimeException("Email đã tồn tại");
         }
-        if (userRepository.existsByCccd(req.getSoCCCD())) {  // cccd
-            throw new RuntimeException("CCCD đã tồn tại");
-        }
 
         User user = new User();
-        user.setHoTen(req.getHoTen());
+        user.setFullName(req.getFullName());
         user.setEmail(req.getEmail());
-        user.setSoDienThoai(req.getSoDienThoai());
-        user.setDiaChi(req.getDiaChi());
-        user.setCccd(req.getSoCCCD());           // ← quan trọng
-        user.setMatKhau(PasswordUtil.hashPassword(req.getMatKhau()));
-        user.setVaiTro("CUSTOMER");
-        user.setTrangThai("ACTIVE");
+        user.setPhone(req.getPhone());
+        user.setAddress(req.getAddress());
+        user.setPassword(PasswordUtil.hashPassword(req.getPassword()));
+        user.setRole("Customer");
+        user.setStatus("Active");
 
         return userRepository.save(user);
     }
-
     @Override
-    public User login(String soDienThoai, String matKhau) {
-        User user = userRepository.findBySoDienThoai(soDienThoai)
+    public User login(String phone, String password) {
+        User user = userRepository.findByPhone(phone)
                 .orElseThrow(() -> new RuntimeException("Sai số điện thoại hoặc mật khẩu"));
 
-        if ("BiKhoa".equals(user.getTrangThai())) {
+        if ("Locked".equals(user.getStatus())) {
             throw new RuntimeException("Tài khoản đã bị khóa");
         }
 
-        if (!PasswordUtil.checkPassword(matKhau, user.getMatKhau())) {
+        if (!PasswordUtil.checkPassword(password, user.getPassword())) {
             throw new RuntimeException("Sai số điện thoại hoặc mật khẩu");
         }
         return user;
     }
 
     @Override
-    public void registerAsOwner(Long maNguoiDung, OwnerRegistrationRequest req) {
-        User user = userRepository.findById(maNguoiDung)
+    public void registerAsOwner(Long userId, OwnerRegistrationRequest req) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
 
-        if (ownerRegistrationRepository.existsByUser_MaNguoiDungAndTrangThai(maNguoiDung, "ChoDuyet")) {
+        if (ownerRegistrationRepository.existsByUser_UserIdAndStatus(userId, "Pending")) {
             throw new RuntimeException("Bạn đã có đơn đăng ký đang chờ duyệt!");
         }
 
         OwnerRegistration reg = new OwnerRegistration();
         reg.setUser(user);
-        reg.setSoCCCD(req.getSoCCCD());
-        reg.setAnhCCCDMatTruoc(req.getAnhCCCDMatTruoc() != null ? 
-                              req.getAnhCCCDMatTruoc().getOriginalFilename() : null);
-        reg.setAnhCCCDMatSau(req.getAnhCCCDMatSau() != null ? 
-                            req.getAnhCCCDMatSau().getOriginalFilename() : null);
-        reg.setTrangThai("ChoDuyet");
+        reg.setStatus("Pending");
 
         ownerRegistrationRepository.save(reg);
     }
@@ -87,7 +77,7 @@ public class UserServiceImpl implements UserService {
     public void resetPassword(String email, String newPassword) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Email không tồn tại"));
-        user.setMatKhau(PasswordUtil.hashPassword(newPassword));
+        user.setPassword(PasswordUtil.hashPassword(newPassword));
         userRepository.save(user);
     }
 }
