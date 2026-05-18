@@ -58,7 +58,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+<<<<<<< HEAD
     public void applyForOwner(Long userId, OwnerRegistrationRequest req) {
+=======
+    public void registerAsOwner(Long userId, OwnerRegistrationRequest req) {
+>>>>>>> 7cddc4880364de04e392392295efcaf765c67d2c
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
 

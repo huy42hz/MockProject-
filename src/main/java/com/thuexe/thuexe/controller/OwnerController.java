@@ -18,7 +18,11 @@ public class OwnerController {
         this.userService = userService;
     }
 
+<<<<<<< HEAD
     @GetMapping("/owner-registration")
+=======
+    @GetMapping("/dang-ky-chu-xe")
+>>>>>>> 7cddc4880364de04e392392295efcaf765c67d2c
     public String showOwnerRegistrationForm(Model model, HttpSession session) {
         User user = (User) session.getAttribute("currentUser");
         
@@ -31,14 +35,24 @@ public class OwnerController {
         return "owner/owner-registration";
     }
 
+<<<<<<< HEAD
     @PostMapping("/owner-registration")
+=======
+    @PostMapping("/dang-ky-chu-xe")
+>>>>>>> 7cddc4880364de04e392392295efcaf765c67d2c
     public String submitOwnerRegistration(@ModelAttribute OwnerRegistrationRequest request,
                                           HttpSession session, Model model) {
         try {
             User user = (User) session.getAttribute("currentUser");
+<<<<<<< HEAD
             userService.applyForOwner(user.getUserId(), request);   // ← Sửa thành applyForOwner
 
             model.addAttribute("success", "Đơn đăng ký trở thành chủ xe đã được gửi thành công!");
+=======
+            userService.registerAsOwner(user.getUserId(), request);
+
+            model.addAttribute("success", "Đơn đăng ký trở thành chủ xe đã được gửi thành công! Admin sẽ xét duyệt sớm.");
+>>>>>>> 7cddc4880364de04e392392295efcaf765c67d2c
             return "owner/owner-registration";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
